@@ -9,6 +9,7 @@ from estatistica import descritiva, fmt, interpretar
 AZUL, AZUL_ESC, PRETO, CINZA, CINZA_ESC = (
     "#5BAEE0", "#2B7FB8", "#111111", "#E6EAEE", "#6B7480"
 )
+ANOS = ["2022", "2010"]  # anos do Censo oferecidos no filtro (o primeiro e o padrao)
 CSS = """<style>
 h1, h2, h3 {color:#111111; font-weight:600; letter-spacing:0;}
 .etiqueta {color:#2B7FB8; font-size:.85rem; font-weight:600; text-transform:uppercase; letter-spacing:.04em;}
@@ -80,13 +81,26 @@ def renderizar(cfg):
 
     sb = st.sidebar
     sb.header("Fonte dos dados")
+    ano = sb.radio("Ano do Censo", ANOS, horizontal=True, key=f"{k}_ano")
     try:
-        cands = ibge.candidatas(cfg["palavras"], cfg.get("pesquisa"), cfg.get("preferidas", []), cfg.get("reforco", []))
+        cands = ibge.candidatas(cfg["palavras"], cfg.get("pesquisa"), cfg.get("preferidas", []), cfg.get("reforco", []),
+                                limite=20 if ano == ANOS[0] else 120)
+        if ano != ANOS[0]:
+            with st.spinner(f"Procurando tabelas com dados de {ano}..."):
+                com_ano = []
+                for c in cands:
+                    try:
+                        if ano in ibge.periodos(c["id"]):
+                            com_ano.append(c)
+                    except ibge.ErroIBGE:
+                        continue
+                cands = com_ano
     except ibge.ErroIBGE as e:
         st.error(str(e))
         st.stop()
     if not cands:
-        st.error("Nenhuma tabela do SIDRA encontrada para este indicador. Verifique a lista de palavras em CONFIG['palavras'].")
+        st.error(f"Nenhuma tabela do SIDRA com dados de {ano} encontrada para este indicador. "
+                 "Escolha outro ano ou verifique a lista de palavras em CONFIG['palavras'].")
         st.stop()
     nomes_tab = {c["id"]: c["nome"] for c in cands}
     tabela = sb.selectbox("Tabela do SIDRA", list(nomes_tab), format_func=lambda i: f"{i} - {nomes_tab[i]}", key=f"{k}_tabela")
@@ -106,7 +120,8 @@ def renderizar(cfg):
     iv = next((i for i, v in enumerate(ids_v) if ibge.norm(cfg["variavel"]) in ibge.norm(vars_[v]["nome"])), 0)
     var_id = sb.selectbox("Variável", ids_v, index=iv, key=f"{k}_{tabela}_var",
                           format_func=lambda i: f"{vars_[i]['nome']} ({vars_[i]['unidade']})")
-    periodo = sb.selectbox("Período", periodos, key=f"{k}_{tabela}_per")
+    periodo = sb.selectbox("Período", periodos, index=periodos.index(ano) if ano in periodos else 0,
+                           key=f"{k}_{tabela}_per_{ano}")
 
     filtros, ordem = {}, {}
     with sb.expander("Recortes (classificações)"):

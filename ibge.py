@@ -7,7 +7,7 @@ import requests
 import streamlit as st
 
 BASE = "https://servicodados.ibge.gov.br/api/v3/agregados"
-HEADERS = {"User-Agent": "numeros-que-falam/1.0 (projeto escolar)"}
+HEADERS = {"User-Agent": "PYMATIB"}
 REGIOES = {"1": "Norte", "2": "Nordeste", "3": "Sudeste", "4": "Sul", "5": "Centro-Oeste"}
 LIMITE_VALORES = 90000  # a API recusa consultas acima de 100 mil valores
 

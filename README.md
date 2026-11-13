@@ -1,16 +1,14 @@
-# Números que Falam - Descobrindo o Brasil
-
 Dashboard de indicadores demográficos do IBGE com estatística descritiva (Python, Pandas, NumPy, Plotly, Streamlit).
 
 ## Os 5 indicadores (um por estudante)
 
 | Nº | Arquivo | Indicador demográfico |
 |----|---------|-----------------------|
-| 1 | indicador_1_populacao_idade_sexo_raca.py | População por grupo de idade, sexo e raça |
-| 2 | indicador_2_alfabetizacao_sexo_raca.py | Alfabetização por sexo e raça |
-| 3 | indicador_3_pessoas_indigenas.py | Pessoas indígenas (localização e situação do domicílio) |
-| 4 | indicador_4_mulheres.py | Mulheres |
-| 5 | indicador_5_rendimento_responsaveis.py | Rendimento dos responsáveis |
+| 1 | indicador_populacao.py | População por grupo de idade, sexo e raça |
+| 2 | indicador_alfabetizacao.py | Alfabetização por sexo e raça |
+| 3 | indicador_indigenas.py | Pessoas indígenas (localização e situação do domicílio) |
+| 4 | indicador_mulheres.py | Mulheres |
+| 5 | indicador_rendimento.py | Rendimento dos responsáveis |
 
 Antes de entregar, edite a variável `ESTUDANTE` no topo de cada arquivo com o nome do integrante.
 
@@ -19,17 +17,17 @@ Antes de entregar, edite a variável `ESTUDANTE` no topo de cada arquivo com o n
 ```
 pip install -r requirements.txt
 streamlit run app.py                                    # painel único (integração do grupo)
-streamlit run indicador_1_populacao_idade_sexo_raca.py  # um indicador isolado
+streamlit run indicador_populacao.py  # um indicador isolado
 python testes_estatistica.py                            # valida a matemática
 ```
 
 ## Estrutura
 
 - `app.py`: painel integrado com navegação por indicador.
-- `comum/ibge.py`: cliente da API de Agregados v3 do IBGE (catálogo, metadados, períodos, dados).
-- `comum/estatistica.py`: média, mediana, moda, Q1, Q3, IQR, amplitude, variância, desvio padrão, CV e outliers (1,5 x IQR).
-- `comum/painel.py`: interface (filtros, cards, histograma, boxplot, ranking, comparação, método).
-- `testes_estatistica.py`: confere os cálculos com contas manuais e NumPy.
+- `ibge.py`: cliente da API de Agregados v3 do IBGE (catálogo, metadados, períodos, dados).
+- `estatistica.py`: média, mediana, moda, Q1, Q3, IQR, amplitude, variância, desvio padrão, CV e outliers (1,5 x IQR).
+- `dados.py`: interface (filtros, cards, histograma, boxplot, ranking, comparação, método).
+- `estatistica.py`: confere os cálculos com contas manuais e NumPy.
 
 ## Como os dados são obtidos
 
