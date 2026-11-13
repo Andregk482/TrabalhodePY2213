@@ -306,5 +306,4 @@ def renderizar(cfg):
         st.latex(r"\sigma^2=\frac{\sum (x_i-\bar{x})^2}{n}\ (\text{amostral: } n-1) \qquad \sigma=\sqrt{\sigma^2} \qquad CV=\frac{\sigma}{\bar{x}}\cdot 100")
         st.caption("Quartis por interpolação linear (método do NumPy/Pandas). A variância tem a unidade ao quadrado.")
         st.subheader("Tabela utilizada")
-        st.write(f"Tabela {tabela}: {nomes_tab[tabela]}. Confira o nome e as categorias antes de apresentar; "
-                 "se necessário, troque a tabela na barra lateral.")
+        st.write(f"Tabela {tabela}: {nomes_tab[tabela]}.")
